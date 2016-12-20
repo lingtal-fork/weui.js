@@ -1,7 +1,6 @@
 // import 'weui';
 import FastClick from 'fastclick';
 import weui from '../src/weui';
-import city from './city';
 
 FastClick.attach(document.body);
 
@@ -29,7 +28,10 @@ document.querySelector('#confirmBtn').addEventListener('click', function () {
 
 /* toast */
 document.querySelector('#toastBtn').addEventListener('click', function () {
-    weui.toast('操作成功', 3000);
+    weui.toast('操作成功', {
+        duration: 3000,
+        className: "bears"
+    });
 });
 
 
@@ -68,14 +70,17 @@ document.querySelector('#actionSheetBtn').addEventListener('click', function () 
                 console.log('取消');
             }
         }
-    ]);
+    ], {
+        className: "custom-classname"
+    });
 });
 
 
-/* tipTips */
+/* topTips */
 document.querySelector('#topTipsBtn').addEventListener('click', function () {
     weui.topTips('请填写正确的字段', {
         duration: 3000,
+        className: "custom-classname",
         callback: function () {
             console.log('close');
         }
@@ -84,69 +89,43 @@ document.querySelector('#topTipsBtn').addEventListener('click', function () {
 
 
 /* picker */
-// 时间选择器
-document.querySelector('#datePickerBtn').addEventListener('click', function () {
-    weui.datePicker({
-        start: 1990,
-        end: 2000,
-        onChange: function (result) {
-            console.log(result);
-        },
-        onConfirm: function (result) {
-            console.log(result);
-        },
-        id: 'DatePicker'
-    });
-});
-
-// 城市选择器
-document.querySelector('#cityPickerBtn').addEventListener('click', function () {
-    weui.picker(city, {
-        onChange: function (result) {
-            console.log(result);
-        },
-        onConfirm: function (result) {
-            console.log(result);
-        },
-        id: 'districtPicker'
-    });
-});
-
 // 普通选择器
 document.querySelector('#pickerBtn').addEventListener('click', function () {
     weui.picker([{
-            label: '飞机票',
-            value: 0
-        }, {
-            label: '火车票',
-            disabled: true,
-            value: 1
-        }, {
-            label: '的士票',
-            disabled: true,
-            value: 2
-        }, {
-            label: '住宿费',
-            value: 3
-        }, {
-            label: '礼品费',
-            value: 4
-        }, {
-            label: '活动费',
-            value: 5
-        }, {
-            label: '通讯费',
-            value: 6
-        }, {
-            label: '补助',
-            value: 7
-        }, {
-            label: '通讯费',
-            value: 8
-        }, {
-            label: '其他',
-            value: 9
+        label: '飞机票',
+        value: 0
+    }, {
+        label: '火车票(disabled)',
+        disabled: true,
+        value: 1
+    }, {
+        label: '的士票(disabled)',
+        disabled: true,
+        value: 2
+    }, {
+        label: '住宿费',
+        value: 3
+    }, {
+        label: '礼品费',
+        value: 4
+    }, {
+        label: '活动费',
+        value: 5
+    }, {
+        label: '通讯费',
+        value: 6
+    }, {
+        label: '补助',
+        value: 7
+    }, {
+        label: '通讯费',
+        value: 8
+    }, {
+        label: '其他',
+        value: 9
     }], {
+        defaultValue: [8],
+        className: 'custom-classname',
         onChange: function (result) {
             //console.log(item, index);
             console.log(result);
@@ -154,7 +133,136 @@ document.querySelector('#pickerBtn').addEventListener('click', function () {
         onConfirm: function (result) {
             console.log(result);
         },
-        id: 'singleLinePicker'
+        id: 'picker'
+    });
+});
+
+// 时间选择器
+document.querySelector('#datePickerBtn').addEventListener('click', function () {
+    weui.datePicker({
+        start: 1990,
+        end: 2000,
+        defaultValue: [1991, 6, 9],
+        onChange: function (result) {
+            console.log(result);
+        },
+        onConfirm: function (result) {
+            console.log(result);
+        },
+        id: 'datePicker'
+    });
+});
+
+// 多列选择器
+document.querySelector('#multiPickerBtn').addEventListener('click', function () {
+    weui.picker([
+        {
+            label: '1',
+            value: '1'
+        }, {
+            label: '2',
+            value: '2'
+        }, {
+            label: '3',
+            value: '3'
+        }
+    ], [
+        {
+            label: 'A',
+            value: 'A'
+        }, {
+            label: 'B',
+            value: 'B'
+        }, {
+            label: 'C',
+            value: 'C'
+        }
+    ], {
+        defaultValue: ['3', 'A'],
+        onChange: function (result) {
+            console.log(result);
+        },
+        onConfirm: function (result) {
+            console.log(result);
+        },
+        id: 'multiPickerBtn'
+    });
+});
+
+// 级联选择器
+document.querySelector('#cascadePickerBtn').addEventListener('click', function () {
+    weui.picker([
+        {
+            label: '广东',
+            value: 0,
+            children: [
+                {
+                    label: '广州',
+                    value: 0,
+                    children: [
+                        {
+                            label: '海珠',
+                            value: 0
+                        }, {
+                            label: '番禺',
+                            value: 1
+                        }
+                    ]
+                }, {
+                    label: '佛山',
+                    value: 1,
+                    children: [
+                        {
+                            label: '禅城',
+                            value: 0
+                        }, {
+                            label: '南海',
+                            value: 1
+                        }
+                    ]
+                }
+            ]
+        }, {
+            label: '广西',
+            value: 1,
+            children: [
+                {
+                    label: '南宁',
+                    value: 0,
+                    children: [
+                        {
+                            label: '青秀',
+                            value: 0
+                        }, {
+                            label: '兴宁',
+                            value: 1
+                        }
+                    ]
+                }, {
+                    label: '桂林',
+                    value: 1,
+                    children: [
+                        {
+                            label: '象山',
+                            value: 0
+                        }, {
+                            label: '秀峰',
+                            value: 1
+                        }
+                    ]
+                }
+            ]
+        }
+    ], {
+        depth: 3,
+        defaultValue: [0, 1, 1],
+        onChange: function (result) {
+            console.log(result);
+        },
+        onConfirm: function (result) {
+            console.log(result);
+        },
+        id: 'cascadePicker'
     });
 });
 
@@ -163,11 +271,55 @@ document.querySelector('#pickerBtn').addEventListener('click', function () {
 weui.searchBar('#searchBar');
 
 
+/* slider 因为需要获取长度，所以必须要在slider显示的时候才调用weui.slider*/
+var isSetSlider = false;
+function setSlider(){
+    if(isSetSlider) return;
+    isSetSlider = true;
+
+    // 普通slider
+    var sliderValue = document.getElementById("sliderValue");
+    weui.slider('#slider', {
+        defaultValue: 50,
+        onChange: function(percent){
+            sliderValue.innerHTML = Math.round(percent);
+            console.log(percent);
+        }
+    });
+
+    // 带step的slider
+    var sliderStepValue = document.getElementById("sliderStepValue");
+    weui.slider('#sliderStep', {
+        step: 10,
+        defaultValue: 40,
+        onChange: function(percent){
+            sliderStepValue.innerHTML = Math.round(percent);
+            console.log(percent);
+        }
+    });
+
+    // 分块的slider
+    var sliderBlockValue = document.getElementById("sliderBlockValue");
+    weui.slider('#sliderBlock', {
+        step: 100 / 3,
+        defaultValue: 33.333,
+        onChange: function(percent){
+            sliderBlockValue.innerHTML = Math.round(percent);
+            console.log(percent);
+        }
+    });
+}
+
+
 /* tab */
 weui.tab('#tab',{
     defaultIndex: 0,
     onChange: function(index){
         console.log(index);
+
+        if(index == 3){
+            setSlider(); // 设置slider
+        }
     }
 });
 
@@ -268,6 +420,7 @@ document.querySelector('#uploaderFiles').addEventListener('click', function(e){
         url = url.match(/url\((.*?)\)/)[1];
     }
     var gallery = weui.gallery(url, {
+        className: 'custom-name',
         onDelete: function(){
             weui.confirm('确定删除该图片？', function(){
                 --uploadCount;

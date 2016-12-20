@@ -1,7 +1,6 @@
 import $ from '../util/util';
 import tpl from './actionSheet.html';
 
-const $body = $('body');
 let _sington;
 
 /**
@@ -13,6 +12,9 @@ let _sington;
  * @param {array} actions 下层的选项
  * @param {string} actions[].label 选项的文字
  * @param {function} actions[].onClick 选项点击时的回调
+ *
+ * @param {object=} options 配置项
+ * @param {string=} options.className 自定义类名
  *
  * @example
  * weui.actionSheet([
@@ -39,17 +41,21 @@ let _sington;
  *             console.log('取消');
  *         }
  *     }
- * ]);
+ * ], {
+ *     className: 'custom-classname'
+ * });
  */
-function actionSheet(menus = [], actions = []) {
+function actionSheet(menus = [], actions = [], options = {}) {
     if(_sington) return _sington;
 
     const isAndroid = $.os.android;
-    const $actionSheetWrap = $($.render(tpl, {
+    options = $.extend({
         menus: menus,
         actions: actions,
+        className: '',
         isAndroid: isAndroid
-    }));
+    }, options);
+    const $actionSheetWrap = $($.render(tpl, options));
     const $actionSheet = $actionSheetWrap.find('.weui-actionsheet');
     const $actionSheetMask = $actionSheetWrap.find('.weui-mask');
 
@@ -62,7 +68,7 @@ function actionSheet(menus = [], actions = []) {
                 _sington = false;
             });
     }
-    $body.append($actionSheetWrap);
+    $('body').append($actionSheetWrap);
 
     // 这里获取一下计算后的样式，强制触发渲染. fix IOS10下闪现的问题
     $.getStyle($actionSheet[0], 'transform');
@@ -82,8 +88,8 @@ function actionSheet(menus = [], actions = []) {
         hide();
     });
 
-    $actionSheetWrap.hide = hide;
-    _sington = $actionSheetWrap;
-    return $actionSheetWrap;
+    _sington = $actionSheetWrap[0];
+    _sington.hide = hide;
+    return _sington;
 }
 export default actionSheet;

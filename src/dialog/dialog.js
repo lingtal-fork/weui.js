@@ -1,13 +1,12 @@
 import $ from '../util/util';
 import tpl from './dialog.html';
 
-const $body = $('body');
 let _sington;
 
 /**
  * dialog，弹窗，alert和confirm的父类
  *
- * @param {Object=} options 配置项
+ * @param {object=} options 配置项
  * @param {string=} options.title 弹窗的标题
  * @param {string=} options.content 弹窗的内容
  * @param {string=} options.className 弹窗的自定义类名
@@ -64,7 +63,7 @@ function dialog(options = {}) {
             });
     }
 
-    $body.append($dialogWrap);
+    $('body').append($dialogWrap);
     // 不能直接把.weui-animate-fade-in加到$dialog，会导致mask的z-index有问题
     $mask.addClass('weui-animate-fade-in');
     $dialog.addClass('weui-animate-fade-in');
@@ -76,8 +75,8 @@ function dialog(options = {}) {
         });
     });
 
-    $dialogWrap.hide = hide;
-    _sington = $dialogWrap;
-    return $dialogWrap;
+    _sington = $dialogWrap[0];
+    _sington.hide = hide;
+    return _sington;
 }
 export default dialog;

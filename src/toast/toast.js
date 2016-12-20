@@ -1,7 +1,6 @@
 import $ from '../util/util';
 import tpl from './toast.html';
 
-const $body = $('body');
 let _sington;
 
 /**
@@ -10,11 +9,13 @@ let _sington;
  * @param {Object|function=} options 配置项或回调
  * @param {number=} [options.duration=3000] 多少毫秒后关闭toast
  * @param {function=} options.callback 关闭后的回调
+ * @param {string=} options.className 自定义类名
  *
  * @example
  * weui.toast('操作成功', 3000);
  * weui.toast('操作成功', {
  *     duration: 3000,
+ *     className: 'custom-classname',
  *     callback: function(){ console.log('close') }
  * });
  */
@@ -33,13 +34,14 @@ function toast(content = '', options = {}) {
     }
 
     options = $.extend({
+        content: content,
         duration: 3000,
-        callback: $.noop
+        callback: $.noop,
+        className: ''
     }, options);
 
-
-    let $toast = $($.render(tpl, {content}));
-    $body.append($toast);
+    let $toast = $($.render(tpl, options));
+    $('body').append($toast);
     $toast.addClass('weui-animate-fade-in');
 
     setTimeout(() => {
@@ -52,7 +54,7 @@ function toast(content = '', options = {}) {
             });
     }, options.duration);
 
-    _sington = $toast;
-    return $toast;
+    _sington = $toast[0];
+    return $toast[0];
 }
 export default toast;

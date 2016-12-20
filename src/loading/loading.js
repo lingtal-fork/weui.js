@@ -1,23 +1,31 @@
 import $ from '../util/util';
 import tpl from './loading.html';
 
-const $body = $('body');
 let _sington;
 
 /**
  * loading
  * @param {string} content loading的文字
+ * @param {object=} options 配置项
+ * @param {string=} options.className 自定义类名
  *
  * @example
- * var loading = weui.loading('loading');
+ * var loading = weui.loading('loading', {
+ *     className: 'custom-classname'
+ * });
  * setTimeout(function () {
  *     loading.hide();
  * }, 3000);
  */
-function loading(content = '') {
+function loading(content = '', options = {}) {
     if(_sington) return _sington;
 
-    const $loading = $($.render(tpl, {content}));
+    options = $.extend({
+        content: content,
+        className: ''
+    }, options);
+
+    const $loading = $($.render(tpl, options));
     function hide() {
         $loading
             .addClass('weui-animate-fade-out')
@@ -26,11 +34,11 @@ function loading(content = '') {
                 _sington = false;
             });
     }
-    $body.append($loading);
+    $('body').append($loading);
     $loading.addClass('weui-animate-fade-in');
 
-    $loading.hide = hide;
-    _sington = $loading;
-    return $loading;
+    _sington = $loading[0];
+    _sington.hide = hide;
+    return _sington;
 }
 export default loading;

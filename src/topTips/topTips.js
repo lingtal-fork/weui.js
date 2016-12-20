@@ -1,7 +1,6 @@
 import $ from '../util/util';
 import tpl from './topTips.html';
 
-const $body = $('body');
 let _toptips = null;
 
 /**
@@ -17,6 +16,7 @@ let _toptips = null;
  * weui.topTips('请填写正确的字段', function(){ console.log('close') });
  * weui.topTips('请填写正确的字段', {
  *     duration: 3000,
+ *     className: 'custom-classname',
  *     callback: function(){ console.log('close') }
  * });
  */
@@ -34,18 +34,20 @@ function topTips(content, options = {}) {
     }
 
     options = $.extend({
+        content: content,
         duration: 3000,
-        callback: $.noop
+        callback: $.noop,
+        className: ''
     }, options);
 
-    const $topTips = $($.render(tpl, {content}));
+    const $topTips = $($.render(tpl, options));
     function hide(){
         $topTips.remove();
         options.callback();
         _toptips = null;
     }
 
-    $body.append($topTips);
+    $('body').append($topTips);
     if(_toptips){
         clearTimeout(_toptips.timeout);
         _toptips.hide();
@@ -56,7 +58,7 @@ function topTips(content, options = {}) {
     };
     _toptips.timeout = setTimeout(hide, options.duration);
 
-    $topTips.hide = hide;
-    return $topTips;
+    $topTips[0].hide = hide;
+    return $topTips[0];
 }
 export default topTips;
